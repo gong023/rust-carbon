@@ -1,0 +1,7 @@
+[package]
+name = "carbon"
+version = "0.1.0"
+authors = ["gong023 <gon.gong.gone@gmail.com>"]
+
+[dependencies]
+time = "0.1"
