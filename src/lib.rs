@@ -3,7 +3,7 @@ extern crate time;
 pub use time::*;
 
 pub struct DateTime {
-    t: Tm,
+    pub t: Tm,
 }
 
 impl DateTime {
@@ -13,7 +13,7 @@ impl DateTime {
         }
     }
 
-    pub fn test_now(tm: Tm) -> DateTime {
+    pub fn create_from_tm(tm: Tm) -> DateTime {
         DateTime {
             t: tm,
         }
@@ -27,13 +27,23 @@ impl DateTime {
         self.t.to_timespec()
     }
 
-    pub fn start_of_month(&self) -> time::Tm {
-        let mut tt = self.t;
-        tt.tm_mday = 1;
+    pub fn start_of_month(&self) -> DateTime {
+        let mut copied_tm = self.t;
+        copied_tm.tm_mday = 1;
+        copied_tm.tm_wday = self.t.tm_wday - (self.t.tm_mday % 7) + 1;
+        // TODO: fix tm_yday
+        DateTime::create_from_tm(copied_tm).start_of_day()
+    }
 
-        tt.tm_wday = self.t.tm_wday - (self.t.tm_mday % 7) + 1;
-        // todo:start_of_day
-        return tt;
+    pub fn start_of_day(&self) -> DateTime {
+        let mut copied_tm = self.t;
+        copied_tm.tm_hour = 0;
+        copied_tm.tm_sec = 0;
+        copied_tm.tm_min = 0;
+        copied_tm.tm_nsec = 0;
+        // TODO: fix tm_isdst
+
+        DateTime::create_from_tm(copied_tm)
     }
 
     // create Tm from unixtime
