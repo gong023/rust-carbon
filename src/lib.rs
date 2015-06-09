@@ -38,11 +38,24 @@ impl DateTime {
     pub fn start_of_day(&self) -> DateTime {
         let mut copied_tm = self.t;
         copied_tm.tm_hour = 0;
-        copied_tm.tm_sec = 0;
-        copied_tm.tm_min = 0;
-        copied_tm.tm_nsec = 0;
-        // TODO: fix tm_isdst
+        DateTime::create_from_tm(copied_tm).start_of_hour()
+    }
 
+    pub fn start_of_hour(&self) -> DateTime {
+        let mut copied_tm = self.t;
+        copied_tm.tm_min = 0;
+        DateTime::create_from_tm(copied_tm).start_of_minute()
+    }
+
+    pub fn start_of_minute(&self) -> DateTime {
+        let mut copied_tm = self.t;
+        copied_tm.tm_sec = 0;
+        DateTime::create_from_tm(copied_tm).start_of_second()
+    }
+
+    pub fn start_of_second(&self) -> DateTime {
+        let mut copied_tm = self.t;
+        copied_tm.tm_nsec = 0;
         DateTime::create_from_tm(copied_tm)
     }
 

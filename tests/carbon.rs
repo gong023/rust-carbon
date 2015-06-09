@@ -3,7 +3,7 @@ extern crate time;
 
 #[test]
 fn test_start_of_month() {
-    let january_second = time::Tm {
+    let january_ends = time::Tm {
         tm_sec: 59,
         tm_min: 59,
         tm_hour: 23,
@@ -17,7 +17,7 @@ fn test_start_of_month() {
         tm_nsec: 100,
     };
 
-    let january_first = time::Tm {
+    let january_starts = time::Tm {
         tm_sec: 0,
         tm_min: 0,
         tm_hour: 0,
@@ -32,12 +32,12 @@ fn test_start_of_month() {
     };
 
     // TODO: add test case when tm_wday is 0
-    assert_eq!(january_first, carbon::DateTime::create_from_tm(january_second).start_of_month().t);
+    assert_eq!(january_starts, carbon::DateTime::create_from_tm(january_ends).start_of_month().t);
 }
 
 #[test]
 fn test_start_of_day() {
-    let january_31th_ends = time::Tm {
+    let january_ends = time::Tm {
         tm_sec: 59,
         tm_min: 59,
         tm_hour: 23,
@@ -51,7 +51,7 @@ fn test_start_of_day() {
         tm_nsec: 100,
     };
 
-    let january_31th_starts = time::Tm {
+    let january_starts = time::Tm {
         tm_sec: 0,
         tm_min: 0,
         tm_hour: 0,
@@ -65,5 +65,104 @@ fn test_start_of_day() {
         tm_nsec: 0,
     };
 
-    assert_eq!(january_31th_starts, carbon::DateTime::create_from_tm(january_31th_ends).start_of_day().t);
+    assert_eq!(january_starts, carbon::DateTime::create_from_tm(january_ends).start_of_day().t);
+}
+
+#[test]
+fn test_start_of_hour() {
+    let january_ends = time::Tm {
+        tm_sec: 59,
+        tm_min: 59,
+        tm_hour: 23,
+        tm_mday: 31,
+        tm_mon: 1,
+        tm_year: 115,
+        tm_wday: 6,
+        tm_yday: 0,
+        tm_isdst: 0,
+        tm_utcoff: 0,
+        tm_nsec: 100,
+    };
+
+    let january_starts = time::Tm {
+        tm_sec: 0,
+        tm_min: 0,
+        tm_hour: 23,
+        tm_mday: 31,
+        tm_mon: 1,
+        tm_year: 115,
+        tm_wday: 6,
+        tm_yday: 0,
+        tm_isdst: 0,
+        tm_utcoff: 0,
+        tm_nsec: 0,
+    };
+
+    assert_eq!(january_starts, carbon::DateTime::create_from_tm(january_ends).start_of_hour().t);
+}
+
+#[test]
+fn test_start_of_minute() {
+    let january_ends = time::Tm {
+        tm_sec: 59,
+        tm_min: 59,
+        tm_hour: 23,
+        tm_mday: 31,
+        tm_mon: 1,
+        tm_year: 115,
+        tm_wday: 6,
+        tm_yday: 0,
+        tm_isdst: 0,
+        tm_utcoff: 0,
+        tm_nsec: 100,
+    };
+
+    let january_starts = time::Tm {
+        tm_sec: 0,
+        tm_min: 59,
+        tm_hour: 23,
+        tm_mday: 31,
+        tm_mon: 1,
+        tm_year: 115,
+        tm_wday: 6,
+        tm_yday: 0,
+        tm_isdst: 0,
+        tm_utcoff: 0,
+        tm_nsec: 0,
+    };
+
+    assert_eq!(january_starts, carbon::DateTime::create_from_tm(january_ends).start_of_minute().t);
+}
+
+#[test]
+fn test_start_of_second() {
+    let january_ends = time::Tm {
+        tm_sec: 59,
+        tm_min: 59,
+        tm_hour: 23,
+        tm_mday: 31,
+        tm_mon: 1,
+        tm_year: 115,
+        tm_wday: 6,
+        tm_yday: 0,
+        tm_isdst: 0,
+        tm_utcoff: 0,
+        tm_nsec: 100,
+    };
+
+    let january_starts = time::Tm {
+        tm_sec: 59,
+        tm_min: 59,
+        tm_hour: 23,
+        tm_mday: 31,
+        tm_mon: 1,
+        tm_year: 115,
+        tm_wday: 6,
+        tm_yday: 0,
+        tm_isdst: 0,
+        tm_utcoff: 0,
+        tm_nsec: 0,
+    };
+
+    assert_eq!(january_starts, carbon::DateTime::create_from_tm(january_ends).start_of_second().t);
 }
