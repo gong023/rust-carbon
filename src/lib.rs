@@ -59,6 +59,10 @@ impl DateTime {
         DateTime::create_from_tm(copied_tm)
     }
 
+    pub fn is_leap_year(&self) -> bool {
+        (self.t.tm_year % 4 == 0) && ((self.t.tm_year % 100 != 0) || ((1900 + self.t.tm_year) % 400 == 0))
+    }
+
     // create Tm from unixtime
 //    pub fn at(clock: Timespec) -> DateTime {
 //    }
