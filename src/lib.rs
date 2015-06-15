@@ -2,11 +2,24 @@ extern crate time;
 
 mod start;
 
-pub use time::*;
+pub use time::Tm;
 pub use start::Start;
 
+#[derive(PartialEq, Eq, Debug)]
 pub struct DateTime {
-    pub t: Tm,
+    t: Tm,
+}
+
+pub trait Duration {
+    fn month(&self) -> DateTime;
+
+    fn day(&self) -> DateTime;
+
+    fn hour(&self) -> DateTime;
+
+    fn minute(&self) -> DateTime;
+
+    fn second(&self) -> DateTime;
 }
 
 impl DateTime {

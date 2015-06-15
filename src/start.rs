@@ -1,21 +1,7 @@
-pub use time::*;
-
-use super::DateTime;
+use super::{DateTime, Duration};
 
 pub struct Start<'a> {
     date_time: &'a DateTime
-}
-
-trait Hoge {
-    fn month(&self) -> DateTime;
-
-    fn day(&self) -> DateTime;
-
-    fn hour(&self) -> DateTime;
-
-    fn minute(&self) -> DateTime;
-
-    fn second(&self) -> DateTime;
 }
 
 impl<'a> Start<'a> {
@@ -34,7 +20,7 @@ impl<'a> Start<'a> {
     }
 }
 
-impl<'a> Hoge for Start<'a> {
+impl<'a> Duration for Start<'a> {
     fn month(&self) -> DateTime {
         let mut copied_tm = self.date_time.t;
         copied_tm.tm_mday = 1;
