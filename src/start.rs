@@ -10,14 +10,6 @@ impl<'a> Start<'a> {
             date_time: dt
         }
     }
-
-    fn days_in_month(&self, month: i32) -> i32 {
-        match month {
-            2 => { if self.date_time.is_leap_year() { 29 } else { 28 } },
-            4 | 6 | 9 | 11 => 31,
-            _ => 30,
-        }
-    }
 }
 
 impl<'a> Duration for Start<'a> {
@@ -27,7 +19,9 @@ impl<'a> Duration for Start<'a> {
 
         match self.date_time.t.tm_mday % 7 {
             0 =>  copied_tm.tm_wday = 0,
-            _ => { copied_tm.tm_wday = self.date_time.t.tm_wday - (self.date_time.t.tm_mday % 7) + 1; },
+            _ => {
+                copied_tm.tm_wday = self.date_time.t.tm_wday - (self.date_time.t.tm_mday % 7) + 1;
+            },
         }
 
         match self.date_time.t.tm_mon {
@@ -35,7 +29,7 @@ impl<'a> Duration for Start<'a> {
             _ => {
                 let mut yday = 0;
                 for m in (1..self.date_time.t.tm_mon) {
-                    yday += self.days_in_month(m);
+                    yday += self.date_time.days_in_month(m);
                 }
                 copied_tm.tm_yday = yday + 1;
             }

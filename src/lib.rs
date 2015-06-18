@@ -1,9 +1,11 @@
 extern crate time;
 
 mod start;
+mod end;
 
 pub use time::Tm;
 pub use start::Start;
+pub use end::End;
 
 #[derive(PartialEq, Eq, Debug)]
 pub struct DateTime {
@@ -39,9 +41,13 @@ impl DateTime {
         Start::new(&self)
     }
 
+    pub fn end_of(&self) -> End {
+        End::new(&self)
+    }
+
     pub fn is_leap_year(&self) -> bool {
-        let y = 1900 + self.t.tm_year;
-        (y % 4 == 0) && ((y % 100 != 0) || (y % 400 == 0))
+        let year = 1900 + self.t.tm_year;
+        (year % 4 == 0) && ((year % 100 != 0) || (year % 400 == 0))
     }
 
     pub fn to_string(&self) -> time::TmFmt {
@@ -50,5 +56,13 @@ impl DateTime {
 
     pub fn unixtime(&self) -> time::Timespec {
         self.t.to_timespec()
+    }
+
+    fn days_in_month(&self, month: i32) -> i32 {
+        match month {
+            2 => { if self.is_leap_year() { 29 } else { 28 } },
+            4 | 6 | 9 | 11 => 31,
+            _ => 30,
+        }
     }
 }
