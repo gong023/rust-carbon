@@ -164,3 +164,39 @@ fn test_end_of_minute() {
         DateTime::create_from_tm(january_starts).end_of().minute()
     );
 }
+
+#[test]
+fn test_end_of_hour() {
+    let january_starts = time::Tm {
+        tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 1, tm_year: 115,
+        tm_wday: 4, tm_yday: 0, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0,
+    };
+
+    let january_ends = time::Tm {
+        tm_sec: 60, tm_min: 59, tm_hour: 0, tm_mday: 1, tm_mon: 1, tm_year: 115,
+        tm_wday: 4, tm_yday: 0, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 999999999,
+    };
+
+    assert_eq!(
+        DateTime::create_from_tm(january_ends),
+        DateTime::create_from_tm(january_starts).end_of().hour()
+    );
+}
+
+#[test]
+fn test_end_of_day() {
+    let january_starts = time::Tm {
+        tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 1, tm_year: 115,
+        tm_wday: 4, tm_yday: 0, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0,
+    };
+
+    let january_ends = time::Tm {
+        tm_sec: 60, tm_min: 59, tm_hour: 23, tm_mday: 1, tm_mon: 1, tm_year: 115,
+        tm_wday: 4, tm_yday: 0, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 999999999,
+    };
+
+    assert_eq!(
+        DateTime::create_from_tm(january_ends),
+        DateTime::create_from_tm(january_starts).end_of().day()
+    );
+}
