@@ -3,6 +3,32 @@ extern crate time;
 
 pub use carbon::*;
 
+let january_starts   = Tm { tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 0, tm_year: 115, tm_wday: 4, tm_yday: 0, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0 };
+let february_starts  = Tm { tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 1, tm_year: 115, tm_wday: 0, tm_yday: 31, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0 };
+let march_starts     = Tm { tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 2, tm_year: 115, tm_wday: 0, tm_yday: 59, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0 };
+let april_starts     = Tm { tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 3, tm_year: 115, tm_wday: 3, tm_yday: 90, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0 };
+let may_starts       = Tm { tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 4, tm_year: 115, tm_wday: 5, tm_yday: 120, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0 };
+let june_starts      = Tm { tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 5, tm_year: 115, tm_wday: 1, tm_yday: 151, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0 };
+let july_starts      = Tm { tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 6, tm_year: 115, tm_wday: 3, tm_yday: 181, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0 };
+let august_starts    = Tm { tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 7, tm_year: 115, tm_wday: 6, tm_yday: 212, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0 };
+let september_starts = Tm { tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 8, tm_year: 115, tm_wday: 2, tm_yday: 243, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0 };
+let october_starts   = Tm { tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 9, tm_year: 115, tm_wday: 4, tm_yday: 273, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0 };
+let november_starts  = Tm { tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 10, tm_year: 115, tm_wday: 0, tm_yday: 304, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0 };
+let december_starts  = Tm { tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 11, tm_year: 115, tm_wday: 2, tm_yday: 334, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0 };
+
+let january_ends     = Tm { tm_sec: 59, tm_min: 59, tm_hour: 23, tm_mday: 31, tm_mon: 0, tm_year: 115, tm_wday: 6, tm_yday: 30, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 999999999, };
+let february_ends    = Tm { tm_sec: 59, tm_min: 59, tm_hour: 23, tm_mday: 28, tm_mon: 1, tm_year: 115, tm_wday: 6, tm_yday: 58, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 999999999 };
+let march_ends       = Tm { tm_sec: 59, tm_min: 59, tm_hour: 23, tm_mday: 31, tm_mon: 2, tm_year: 115, tm_wday: 2, tm_yday: 89, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 999999999 };
+let april_ends       = Tm { tm_sec: 59, tm_min: 59, tm_hour: 23, tm_mday: 30, tm_mon: 3, tm_year: 115, tm_wday: 4, tm_yday: 119, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 999999999 };
+let may_ends         = Tm { tm_sec: 59, tm_min: 59, tm_hour: 23, tm_mday: 31, tm_mon: 4, tm_year: 115, tm_wday: 0, tm_yday: 150, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 999999999 };
+let june_ends        = Tm { tm_sec: 59, tm_min: 59, tm_hour: 23, tm_mday: 30, tm_mon: 5, tm_year: 115, tm_wday: 2, tm_yday: 180, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 999999999 };
+let july_ends        = Tm { tm_sec: 59, tm_min: 59, tm_hour: 23, tm_mday: 31, tm_mon: 6, tm_year: 115, tm_wday: 5, tm_yday: 211, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 999999999 };
+let august_ends      = Tm { tm_sec: 59, tm_min: 59, tm_hour: 23, tm_mday: 31, tm_mon: 7, tm_year: 115, tm_wday: 1, tm_yday: 242, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 999999999 };
+let september_ends   = Tm { tm_sec: 59, tm_min: 59, tm_hour: 23, tm_mday: 30, tm_mon: 8, tm_year: 115, tm_wday: 3, tm_yday: 272, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 999999999 };
+let october_ends     = Tm { tm_sec: 59, tm_min: 59, tm_hour: 23, tm_mday: 31, tm_mon: 9, tm_year: 115, tm_wday: 6, tm_yday: 303, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 999999999 };
+let november_ends    = Tm { tm_sec: 59, tm_min: 59, tm_hour: 23, tm_mday: 30, tm_mon: 10, tm_year: 115, tm_wday: 1, tm_yday: 333, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 999999999 };
+let december_ends    = Tm { tm_sec: 59, tm_min: 59, tm_hour: 23, tm_mday: 31, tm_mon: 11, tm_year: 115, tm_wday: 4, tm_yday: 364, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 999999999 };
+
 #[test]
 fn test_start_of_month() {
     let january_ends = time::Tm {
@@ -210,7 +236,7 @@ fn test_end_of_month() {
 
     let january_ends = time::Tm {
         tm_sec: 60, tm_min: 59, tm_hour: 23, tm_mday: 31, tm_mon: 1, tm_year: 115,
-        tm_wday: 6, tm_yday: 0, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 999999999,
+        tm_wday: 6, tm_yday: 30, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 999999999,
     };
 
     assert_eq!(

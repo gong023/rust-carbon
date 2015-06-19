@@ -23,7 +23,12 @@ impl<'a> Duration for End<'a> {
         } else {
             copied_tm.tm_wday = self.date_time.t.tm_wday + difference;
         }
-        // TODO: fix tm_yon
+
+        let mut yday = 0;
+        for month in (1..self.date_time.t.tm_mon) {
+            yday += self.date_time.days_in_month(month);
+        }
+        copied_tm.tm_yday = yday - 1;
 
         DateTime::create_from_tm(copied_tm).end_of().day()
     }
