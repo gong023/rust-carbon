@@ -7,7 +7,7 @@ pub use carbon::*;
 fn test_start_of_month() {
     let january_ends = time::Tm {
         tm_sec: 59, tm_min: 59, tm_hour: 23, tm_mday: 31, tm_mon: 1, tm_year: 115,
-        tm_wday: 6, tm_yday: 30, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 100,
+        tm_wday: 6, tm_yday: 31, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 100,
     };
 
     let january_starts = time::Tm {
@@ -27,7 +27,7 @@ fn test_start_of_month() {
 
     let february_starts = time::Tm {
         tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 2, tm_year: 115,
-        tm_wday: 0, tm_yday: 31, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0,
+        tm_wday: 0, tm_yday: 32, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0,
     };
 
     assert_eq!(
@@ -198,5 +198,53 @@ fn test_end_of_day() {
     assert_eq!(
         DateTime::create_from_tm(january_ends),
         DateTime::create_from_tm(january_starts).end_of().day()
+    );
+}
+
+#[test]
+fn test_end_of_month() {
+    let january_starts = time::Tm {
+        tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 1, tm_year: 115,
+        tm_wday: 4, tm_yday: 0, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0,
+    };
+
+    let january_ends = time::Tm {
+        tm_sec: 60, tm_min: 59, tm_hour: 23, tm_mday: 31, tm_mon: 1, tm_year: 115,
+        tm_wday: 6, tm_yday: 0, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 999999999,
+    };
+
+    assert_eq!(
+        DateTime::create_from_tm(january_ends),
+        DateTime::create_from_tm(january_starts).end_of().month()
+    );
+
+    let june_starts = time::Tm {
+        tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 6, tm_year: 115,
+        tm_wday: 1, tm_yday: 0, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0,
+    };
+
+    let june_ends = time::Tm {
+        tm_sec: 60, tm_min: 59, tm_hour: 23, tm_mday: 30, tm_mon: 6, tm_year: 115,
+        tm_wday: 2, tm_yday: 0, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 999999999,
+    };
+
+    assert_eq!(
+        DateTime::create_from_tm(june_ends),
+        DateTime::create_from_tm(june_starts).end_of().month()
+    );
+
+    let august_starts = time::Tm {
+        tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 8, tm_year: 115,
+        tm_wday: 6, tm_yday: 0, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0,
+    };
+
+    let august_ends = time::Tm {
+        tm_sec: 60, tm_min: 59, tm_hour: 23, tm_mday: 31, tm_mon: 8, tm_year: 115,
+        tm_wday: 1, tm_yday: 0, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 999999999,
+    };
+
+    assert_eq!(
+        DateTime::create_from_tm(august_ends),
+        DateTime::create_from_tm(august_starts).end_of().month()
     );
 }

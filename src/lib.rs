@@ -61,8 +61,8 @@ impl DateTime {
     fn days_in_month(&self, month: i32) -> i32 {
         match month {
             2 => { if self.is_leap_year() { 29 } else { 28 } },
-            4 | 6 | 9 | 11 => 31,
-            _ => 30,
+            4 | 6 | 9 | 11 => 30,
+            _ => 31,
         }
     }
 }

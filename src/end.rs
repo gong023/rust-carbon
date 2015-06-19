@@ -17,8 +17,13 @@ impl<'a> Duration for End<'a> {
         let mut copied_tm = self.date_time.t;
         copied_tm.tm_mday = self.date_time.days_in_month(self.date_time.t.tm_mon);
 
-        // TODO: fix tm_mday
-        // TODO: fix tm_mon
+        let difference = (copied_tm.tm_mday - 1) % 7;
+        if self.date_time.t.tm_wday + difference > 6 {
+            copied_tm.tm_wday = difference - 1;
+        } else {
+            copied_tm.tm_wday = self.date_time.t.tm_wday + difference;
+        }
+        // TODO: fix tm_yon
 
         DateTime::create_from_tm(copied_tm).end_of().day()
     }
