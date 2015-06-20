@@ -151,5 +151,59 @@ mod tests {
         assert_eq!(DateTime::create_from_tm(start_tms().october), DateTime::create_from_tm(end_tms().october).start_of().month());
         assert_eq!(DateTime::create_from_tm(start_tms().november), DateTime::create_from_tm(end_tms().november).start_of().month());
         assert_eq!(DateTime::create_from_tm(start_tms().december), DateTime::create_from_tm(end_tms().december).start_of().month());
+
+        let january_mid = Tm { tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 15, tm_mon: 0, tm_year: 115, tm_wday: 4, tm_yday: 14, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0 };
+        assert_eq!(DateTime::create_from_tm(start_tms().january), DateTime::create_from_tm(january_mid).start_of().month());
+    }
+
+    #[test]
+    fn test_start_of_day() {
+        let january_31th_starts = Tm {
+            tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 31, tm_mon: 0, tm_year: 115,
+            tm_wday: 6, tm_yday: 30, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0,
+        };
+        assert_eq!(
+            DateTime::create_from_tm(january_31th_starts),
+            DateTime::create_from_tm(end_tms().january).start_of().day()
+        );
+    }
+
+    #[test]
+    fn test_start_of_hour() {
+        let january_31th_23h_starts = Tm {
+            tm_sec: 0, tm_min: 0, tm_hour: 23, tm_mday: 31, tm_mon: 0, tm_year: 115,
+            tm_wday: 6, tm_yday: 30, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0,
+        };
+
+        assert_eq!(
+            DateTime::create_from_tm(january_31th_23h_starts),
+            DateTime::create_from_tm(end_tms().january).start_of().hour()
+        );
+    }
+
+    #[test]
+    fn test_start_of_minute() {
+        let january_31th_23h_59m_starts = Tm {
+            tm_sec: 0, tm_min: 59, tm_hour: 23, tm_mday: 31, tm_mon: 0, tm_year: 115,
+            tm_wday: 6, tm_yday: 30, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0,
+        };
+
+        assert_eq!(
+            DateTime::create_from_tm(january_31th_23h_59m_starts),
+            DateTime::create_from_tm(end_tms().january).start_of().minute()
+        );
+    }
+
+    #[test]
+    fn test_end_of_second() {
+        let january_31th_23h_59m_59s_starts = Tm {
+            tm_sec: 59, tm_min: 59, tm_hour: 23, tm_mday: 31, tm_mon: 0, tm_year: 115,
+            tm_wday: 6, tm_yday: 30, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0,
+        };
+
+        assert_eq!(
+            DateTime::create_from_tm(january_31th_23h_59m_59s_starts),
+            DateTime::create_from_tm(end_tms().january).start_of().second()
+        );
     }
 }
