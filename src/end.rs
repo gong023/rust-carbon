@@ -1,4 +1,4 @@
-use super::{DateTime, Duration};
+use super::{DateTime, Duration, zeller_congurence};
 
 pub struct End<'a> {
     date_time: &'a DateTime
@@ -17,18 +17,22 @@ impl<'a> Duration for End<'a> {
         let mut copied_tm = self.date_time.t;
         copied_tm.tm_mday = self.date_time.days_in_month(self.date_time.t.tm_mon);
 
-        let difference = (copied_tm.tm_mday - 1) % 7;
-        if self.date_time.t.tm_wday + difference > 6 {
-            copied_tm.tm_wday = difference - 1;
-        } else {
-            copied_tm.tm_wday = self.date_time.t.tm_wday + difference;
-        }
+        copied_tm.tm_wday = zeller_congurence(
+            self.date_time.t.tm_year as f32,
+            self.date_time.t.tm_mon as f32,
+            copied_tm.tm_mday as f32
+        );
 
-        let mut yday = 0;
-        for month in (1..self.date_time.t.tm_mon) {
-            yday += self.date_time.days_in_month(month);
+        match self.date_time.t.tm_mon {
+            0 => copied_tm.tm_yday = self.date_time.days_in_month(0) - 1,
+            _ => {
+                let mut yday = 0;
+                for month in (0..self.date_time.t.tm_mon + 1) {
+                    yday += self.date_time.days_in_month(month);
+                }
+                copied_tm.tm_yday = yday - 1;
+            }
         }
-        copied_tm.tm_yday = yday - 1;
 
         DateTime::create_from_tm(copied_tm).end_of().day()
     }
@@ -47,7 +51,7 @@ impl<'a> Duration for End<'a> {
 
     fn minute(&self) -> DateTime {
         let mut copied_tm = self.date_time.t;
-        copied_tm.tm_sec = 60;
+        copied_tm.tm_sec = 59;
         DateTime::create_from_tm(copied_tm).end_of().second()
     }
 

@@ -195,7 +195,7 @@ mod tests {
     }
 
     #[test]
-    fn test_end_of_second() {
+    fn test_start_of_second() {
         let january_31th_23h_59m_59s_starts = Tm {
             tm_sec: 59, tm_min: 59, tm_hour: 23, tm_mday: 31, tm_mon: 0, tm_year: 115,
             tm_wday: 6, tm_yday: 30, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0,
@@ -204,6 +204,77 @@ mod tests {
         assert_eq!(
             DateTime::create_from_tm(january_31th_23h_59m_59s_starts),
             DateTime::create_from_tm(end_tms().january).start_of().second()
+        );
+    }
+
+    #[test]
+    fn test_end_of_month() {
+        assert_eq!(DateTime::create_from_tm(end_tms().january), DateTime::create_from_tm(end_tms().january).end_of().month());
+        assert_eq!(DateTime::create_from_tm(end_tms().february), DateTime::create_from_tm(end_tms().february).end_of().month());
+        assert_eq!(DateTime::create_from_tm(end_tms().march), DateTime::create_from_tm(end_tms().march).end_of().month());
+        assert_eq!(DateTime::create_from_tm(end_tms().april), DateTime::create_from_tm(end_tms().april).end_of().month());
+        assert_eq!(DateTime::create_from_tm(end_tms().may), DateTime::create_from_tm(end_tms().may).end_of().month());
+        assert_eq!(DateTime::create_from_tm(end_tms().june), DateTime::create_from_tm(end_tms().june).end_of().month());
+        assert_eq!(DateTime::create_from_tm(end_tms().july), DateTime::create_from_tm(end_tms().july).end_of().month());
+        assert_eq!(DateTime::create_from_tm(end_tms().august), DateTime::create_from_tm(end_tms().august).end_of().month());
+        assert_eq!(DateTime::create_from_tm(end_tms().september), DateTime::create_from_tm(end_tms().september).end_of().month());
+        assert_eq!(DateTime::create_from_tm(end_tms().october), DateTime::create_from_tm(end_tms().october).end_of().month());
+        assert_eq!(DateTime::create_from_tm(end_tms().november), DateTime::create_from_tm(end_tms().november).end_of().month());
+        assert_eq!(DateTime::create_from_tm(end_tms().december), DateTime::create_from_tm(end_tms().december).end_of().month());
+
+        let january_mid = Tm { tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 15, tm_mon: 0, tm_year: 115, tm_wday: 4, tm_yday: 14, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0 };
+        assert_eq!(DateTime::create_from_tm(end_tms().january), DateTime::create_from_tm(january_mid).end_of().month());
+    }
+
+    #[test]
+    fn test_end_of_day() {
+        let january_31th_starts = Tm {
+            tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 31, tm_mon: 0, tm_year: 115,
+            tm_wday: 6, tm_yday: 30, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0,
+        };
+
+        assert_eq!(
+            DateTime::create_from_tm(end_tms().january),
+            DateTime::create_from_tm(january_31th_starts).end_of().day()
+        );
+    }
+
+    #[test]
+    fn test_end_of_hour() {
+        let january_31th_23h_starts = Tm {
+            tm_sec: 0, tm_min: 0, tm_hour: 23, tm_mday: 31, tm_mon: 0, tm_year: 115,
+            tm_wday: 6, tm_yday: 30, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0,
+        };
+
+        assert_eq!(
+            DateTime::create_from_tm(end_tms().january),
+            DateTime::create_from_tm(january_31th_23h_starts).end_of().hour()
+        );
+    }
+
+    #[test]
+    fn test_end_of_minute() {
+        let january_31th_23h_59m_starts = Tm {
+            tm_sec: 0, tm_min: 59, tm_hour: 23, tm_mday: 31, tm_mon: 0, tm_year: 115,
+            tm_wday: 6, tm_yday: 30, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0,
+        };
+
+        assert_eq!(
+            DateTime::create_from_tm(end_tms().january),
+            DateTime::create_from_tm(january_31th_23h_59m_starts).end_of().minute()
+        );
+    }
+
+    #[test]
+    fn test_end_of_second() {
+        let january_31th_23h_59m_59s_starts = Tm {
+            tm_sec: 59, tm_min: 59, tm_hour: 23, tm_mday: 31, tm_mon: 0, tm_year: 115,
+            tm_wday: 6, tm_yday: 30, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0,
+        };
+
+        assert_eq!(
+            DateTime::create_from_tm(end_tms().january),
+            DateTime::create_from_tm(january_31th_23h_59m_59s_starts).end_of().second()
         );
     }
 }
