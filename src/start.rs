@@ -1,4 +1,4 @@
-use super::{DateTime, Duration};
+use super::{DateTime, Duration, zeller_congurence};
 
 pub struct Start<'a> {
     date_time: &'a DateTime
@@ -17,21 +17,20 @@ impl<'a> Duration for Start<'a> {
         let mut copied_tm = self.date_time.t;
         copied_tm.tm_mday = 1;
 
-        match self.date_time.t.tm_mday % 7 {
-            0 =>  copied_tm.tm_wday = 0,
-            _ => {
-                copied_tm.tm_wday = self.date_time.t.tm_wday - (self.date_time.t.tm_mday % 7) + 1;
-            },
-        }
+        copied_tm.tm_wday = zeller_congurence(
+            self.date_time.t.tm_year as f32,
+            self.date_time.t.tm_mon as f32,
+            1.0
+        );
 
         match self.date_time.t.tm_mon {
-            1 => copied_tm.tm_yday = 0,
+            0 => copied_tm.tm_yday = 0,
             _ => {
                 let mut yday = 0;
-                for m in (1..self.date_time.t.tm_mon) {
+                for m in (0..self.date_time.t.tm_mon) {
                     yday += self.date_time.days_in_month(m);
                 }
-                copied_tm.tm_yday = yday + 1;
+                copied_tm.tm_yday = yday;
             }
         }
 

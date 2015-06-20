@@ -59,10 +59,97 @@ impl DateTime {
     }
 
     fn days_in_month(&self, month: i32) -> i32 {
-        match month {
+        match month + 1 {
             2 => { if self.is_leap_year() { 29 } else { 28 } },
             4 | 6 | 9 | 11 => 30,
             _ => 31,
         }
+    }
+}
+
+// https://en.wikipedia.org/wiki/Zeller's_congruence#Implementation_in_software
+fn zeller_congurence(y: f32, m: f32, d: f32) -> i32 {
+    let mut yy = 1900.0 + y;
+    let mut mm = 1.0 + m;
+    if mm == 1.0 || mm == 2.0 {
+        yy -= 1.0;
+        mm += 12.0;
+    }
+
+    let x = ((d + (26.0 * (mm + 1.0) / 10.0).floor() + yy + (yy / 4.0).floor() + (6.0 * (yy / 100.0).floor()) + (yy / 400.0).floor()) % 7.0) as i32;
+    match x - 1 {
+        -1 => 6,
+        _  => x - 1,
+    }
+}
+
+#[cfg(test)]
+#[allow(dead_code)]
+mod tests {
+    use super::*;
+
+    struct ExampleTms {
+        january: Tm,
+        february: Tm,
+        march: Tm,
+        april: Tm,
+        may: Tm,
+        june: Tm,
+        july: Tm,
+        august: Tm,
+        september: Tm,
+        october: Tm,
+        november: Tm,
+        december: Tm,
+    }
+
+    fn start_tms() -> ExampleTms {
+        ExampleTms {
+            january:   Tm { tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 0, tm_year: 115, tm_wday: 4, tm_yday: 0, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0 },
+            february:  Tm { tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 1, tm_year: 115, tm_wday: 0, tm_yday: 31, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0 },
+            march:     Tm { tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 2, tm_year: 115, tm_wday: 0, tm_yday: 59, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0 },
+            april:     Tm { tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 3, tm_year: 115, tm_wday: 3, tm_yday: 90, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0 },
+            may:       Tm { tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 4, tm_year: 115, tm_wday: 5, tm_yday: 120, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0 },
+            june:      Tm { tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 5, tm_year: 115, tm_wday: 1, tm_yday: 151, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0 },
+            july:      Tm { tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 6, tm_year: 115, tm_wday: 3, tm_yday: 181, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0 },
+            august:    Tm { tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 7, tm_year: 115, tm_wday: 6, tm_yday: 212, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0 },
+            september: Tm { tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 8, tm_year: 115, tm_wday: 2, tm_yday: 243, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0 },
+            october:   Tm { tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 9, tm_year: 115, tm_wday: 4, tm_yday: 273, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0 },
+            november:  Tm { tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 10, tm_year: 115, tm_wday: 0, tm_yday: 304, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0 },
+            december:  Tm { tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 11, tm_year: 115, tm_wday: 2, tm_yday: 334, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0 },
+        }
+    }
+
+    fn end_tms() -> ExampleTms {
+        ExampleTms {
+            january:     Tm { tm_sec: 59, tm_min: 59, tm_hour: 23, tm_mday: 31, tm_mon: 0, tm_year: 115, tm_wday: 6, tm_yday: 30, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 999999999, },
+            february:    Tm { tm_sec: 59, tm_min: 59, tm_hour: 23, tm_mday: 28, tm_mon: 1, tm_year: 115, tm_wday: 6, tm_yday: 58, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 999999999 },
+            march:       Tm { tm_sec: 59, tm_min: 59, tm_hour: 23, tm_mday: 31, tm_mon: 2, tm_year: 115, tm_wday: 2, tm_yday: 89, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 999999999 },
+            april:       Tm { tm_sec: 59, tm_min: 59, tm_hour: 23, tm_mday: 30, tm_mon: 3, tm_year: 115, tm_wday: 4, tm_yday: 119, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 999999999 },
+            may:         Tm { tm_sec: 59, tm_min: 59, tm_hour: 23, tm_mday: 31, tm_mon: 4, tm_year: 115, tm_wday: 0, tm_yday: 150, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 999999999 },
+            june:        Tm { tm_sec: 59, tm_min: 59, tm_hour: 23, tm_mday: 30, tm_mon: 5, tm_year: 115, tm_wday: 2, tm_yday: 180, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 999999999 },
+            july:        Tm { tm_sec: 59, tm_min: 59, tm_hour: 23, tm_mday: 31, tm_mon: 6, tm_year: 115, tm_wday: 5, tm_yday: 211, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 999999999 },
+            august:      Tm { tm_sec: 59, tm_min: 59, tm_hour: 23, tm_mday: 31, tm_mon: 7, tm_year: 115, tm_wday: 1, tm_yday: 242, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 999999999 },
+            september:   Tm { tm_sec: 59, tm_min: 59, tm_hour: 23, tm_mday: 30, tm_mon: 8, tm_year: 115, tm_wday: 3, tm_yday: 272, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 999999999 },
+            october:     Tm { tm_sec: 59, tm_min: 59, tm_hour: 23, tm_mday: 31, tm_mon: 9, tm_year: 115, tm_wday: 6, tm_yday: 303, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 999999999 },
+            november:    Tm { tm_sec: 59, tm_min: 59, tm_hour: 23, tm_mday: 30, tm_mon: 10, tm_year: 115, tm_wday: 1, tm_yday: 333, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 999999999 },
+            december:    Tm { tm_sec: 59, tm_min: 59, tm_hour: 23, tm_mday: 31, tm_mon: 11, tm_year: 115, tm_wday: 4, tm_yday: 364, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 999999999 },
+        }
+    }
+
+    #[test]
+    fn test_start_of_month() {
+        assert_eq!(DateTime::create_from_tm(start_tms().january), DateTime::create_from_tm(end_tms().january).start_of().month());
+        assert_eq!(DateTime::create_from_tm(start_tms().february), DateTime::create_from_tm(end_tms().february).start_of().month());
+        assert_eq!(DateTime::create_from_tm(start_tms().march), DateTime::create_from_tm(end_tms().march).start_of().month());
+        assert_eq!(DateTime::create_from_tm(start_tms().april), DateTime::create_from_tm(end_tms().april).start_of().month());
+        assert_eq!(DateTime::create_from_tm(start_tms().may), DateTime::create_from_tm(end_tms().may).start_of().month());
+        assert_eq!(DateTime::create_from_tm(start_tms().june), DateTime::create_from_tm(end_tms().june).start_of().month());
+        assert_eq!(DateTime::create_from_tm(start_tms().july), DateTime::create_from_tm(end_tms().july).start_of().month());
+        assert_eq!(DateTime::create_from_tm(start_tms().august), DateTime::create_from_tm(end_tms().august).start_of().month());
+        assert_eq!(DateTime::create_from_tm(start_tms().september), DateTime::create_from_tm(end_tms().september).start_of().month());
+        assert_eq!(DateTime::create_from_tm(start_tms().october), DateTime::create_from_tm(end_tms().october).start_of().month());
+        assert_eq!(DateTime::create_from_tm(start_tms().november), DateTime::create_from_tm(end_tms().november).start_of().month());
+        assert_eq!(DateTime::create_from_tm(start_tms().december), DateTime::create_from_tm(end_tms().december).start_of().month());
     }
 }
