@@ -2,6 +2,10 @@
 name = "carbon"
 version = "0.1.0"
 authors = ["gong023 <gon.gong.gone@gmail.com>"]
+description="thin wrapper of rust-lang/time. Utility for handling date and time. "
+keywords=["time","datetime","carbon","utility"]
+license="MIT"
+homepage="https://github.com/gong023/rust-carbon"
 
 [dependencies]
 time = "0.1"
