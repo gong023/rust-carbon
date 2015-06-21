@@ -7,12 +7,14 @@ pub use time::Tm;
 pub use start::Start;
 pub use end::End;
 
-#[derive(PartialEq, Eq, Debug)]
+static mut Testnow: Option<DateTime> = None;
+
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct DateTime {
-    t: Tm,
+    tm: Tm,
 }
 
-pub trait Duration {
+pub trait CarbonDuration {
     fn month(&self) -> DateTime;
 
     fn day(&self) -> DateTime;
@@ -26,14 +28,27 @@ pub trait Duration {
 
 impl DateTime {
     pub fn now() -> DateTime {
-        DateTime {
-            t: time::now(),
+        match DateTime::get_test_now() {
+            Some(date_time) => date_time,
+            None => DateTime { tm: time:: now_utc() }
         }
     }
 
     pub fn create_from_tm(tm: Tm) -> DateTime {
         DateTime {
-            t: tm,
+            tm: tm,
+        }
+    }
+
+    pub fn set_test_now(test_now: Option<DateTime>) {
+        unsafe {
+            Testnow = test_now
+        }
+    }
+
+    pub fn get_test_now() -> Option<DateTime> {
+        unsafe {
+            Testnow.clone()
         }
     }
 
@@ -46,16 +61,8 @@ impl DateTime {
     }
 
     pub fn is_leap_year(&self) -> bool {
-        let year = 1900 + self.t.tm_year;
+        let year = 1900 + self.tm.tm_year;
         (year % 4 == 0) && ((year % 100 != 0) || (year % 400 == 0))
-    }
-
-    pub fn to_string(&self) -> time::TmFmt {
-        self.t.ctime()
-    }
-
-    pub fn unixtime(&self) -> time::Timespec {
-        self.t.to_timespec()
     }
 
     fn days_in_month(&self, month: i32) -> i32 {
@@ -85,8 +92,12 @@ fn zeller_congurence(y: f32, m: f32, d: f32) -> i32 {
 
 #[cfg(test)]
 #[allow(dead_code)]
+#[allow(unused_imports)]
 mod tests {
+    extern crate time;
     use super::*;
+    use time::Duration;
+    use std::ops::{Add, Sub};
 
     struct ExampleTms {
         january: Tm,
@@ -276,5 +287,22 @@ mod tests {
             DateTime::create_from_tm(end_tms().january),
             DateTime::create_from_tm(january_31th_23h_59m_59s_starts).end_of().second()
         );
+    }
+
+    #[test]
+    fn test_test_now() {
+        DateTime::set_test_now(Some(DateTime::create_from_tm(start_tms().january)));
+        assert_eq!(DateTime::create_from_tm(start_tms().january), DateTime::now());
+        DateTime::set_test_now(None);
+    }
+
+    #[test]
+    fn test_integration_for_tm() {
+        let tm_string = DateTime::create_from_tm(start_tms().january).tm.strftime("%Y-%m-%d %H:%M:%S").ok().unwrap().to_string();
+        assert_eq!("2015-01-01 00:00:00", tm_string);
+
+        let h = Duration::hours(1);
+        let added = DateTime::create_from_tm(start_tms().january).tm.add(h).strftime("%Y-%m-%d %H:%M:%S").ok().unwrap().to_string();
+        assert_eq!("2015-01-01 01:00:00", added);
     }
 }
