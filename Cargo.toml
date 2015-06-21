@@ -6,6 +6,7 @@ description="thin wrapper of rust-lang/time. Utility for handling date and time.
 keywords=["time","datetime","carbon","utility"]
 license="MIT"
 homepage="https://github.com/gong023/rust-carbon"
+documentation = "http://gong023.github.io/rust-carbon/carbon/index.html"
 
 [dependencies]
 time = "0.1"

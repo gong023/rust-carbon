@@ -2,6 +2,8 @@
 
 rust-carbon is thin wrapper of [rust-time](https://github.com/rust-lang/time). Utility for handling date and time.
 
+[![Build Status](https://travis-ci.org/gong023/rust-carbon.svg?branch=master)](https://travis-ci.org/gong023/rust-carbon)
+
 # Usage
 
 Add rust-carbon to your Cargo.toml.
@@ -68,7 +70,7 @@ Directly specify time and set `now` the time. It is useful for testing.
 // carbon::DateTime for 2015-01-01 00:00:00
 let tm = time::Tm {
   tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 0, tm_year: 115, tm_wday: 4, tm_yday: 0, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0 };
-}
+};
 
 let test_now = DateTime::create_from_tm(tm);
 DateTime::set_test_now(test_now);
@@ -91,7 +93,13 @@ DateTime::now().tm.add(hour)
 // return time::Tm for 2015-01-15 02:30:30.500000000
 ```
 
+If you want to know more about rust-carbon, read document.
+
+ - http://gong023.github.io/rust-carbon/carbon/index.html
+
 # Known Issue
 
 - rust-carbon can only deal UTC.
 - enable to modify `start_of().year()`
+
+Contributions are welcome :sparkles:
