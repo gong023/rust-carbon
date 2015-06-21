@@ -1,39 +1,97 @@
 # rust-carbon
 
-```rust
-let date = Date::now('UTC');
+rust-carbon is thin wrapper of [rust-time](https://github.com/rust-lang/time). Utility for handling date and time.
 
-date.toString();
+# Usage
+
+Add rust-carbon to your Cargo.toml.
+
+```toml
+[dependencies]
+carbon = "0.1.*"
 ```
 
-modify date
+And put this in your crate root.
 
 ```rust
-let format = DateFormat::new()
-let date = Date::create(format);
-
-date.toString();
-
-date.unixtime();
-date.startOfDay().toString();
-date.startOfYear().startOfMonth().startOfDay().startOfHour().startOfMinute().toString();
-
-date.addDay(1i).toString();
-date.addYear(1i).addMonth(1i).addDay(1i).addHour(1i).addMinute(1i).addSecond(1i).toString();
-
-date.subDay(1i).toString();
-date.subYear(1i).subMonth(1i).subDay(1i).subHour(1i).subMinute(1i).subSecond(1i).subString();
+extern crate carbon;
 ```
 
-compare date
+# Overview
+
+rust-carbon provides `start_of()` and `end_of()` to get datetime.
+And you can modify datetime by `second`,`minute`,`hour`,`day`, and `month`.
 
 ```rust
-let future_date = Date::now('UTC').addSecond(10i);
-let now = Date::now('UTC');
+// import carbon first
+use carbon::*;
 
-now.greaterThan(future_date); // false
-now.greaterThanOrEqual(future_date); // false
+// now assume that it is 2015-01-15 01:30:30.500000000
 
-now.lessThan(future_date); // true
-now.lessThanOrEqual(future_date); // true
+DateTime::now().start_of().second();
+// => return carbon::DateTime for 2015-01-15 01:30:30.000000000
+DateTime::now().start_of().minute();
+// => return carbon::DateTime for 2015-01-15 01:30:00.000000000
+DateTime::now().start_of().hour();
+// => return carbon::DateTime for 2015-01-15 01:00:00.000000000
+DateTime::now().start_of().day();
+// => return carbon::DateTime for 2015-01-15 00:00:00.000000000
+DateTime::now().start_of().month();
+// => return carbon::DateTime for 2015-01-01 00:00:00.000000000
+
+DateTime::now().end_of().second();
+// => return carbon::DateTime for 2015-01-15 01:30:30.999999999
+DateTime::now().end_of().minute();
+// => return carbon::DateTime for 2015-01-15 01:30:59.999999999
+DateTime::now().end_of().hour();
+// => return carbon::DateTime for 2015-01-15 01:59:59.999999999
+DateTime::now().end_of().day();
+// => return carbon::DateTime for 2015-01-15 23:59:59.999999999
+DateTime::now().end_of().month();
+// => return carbon::DateTime for 2015-01-31 23:59:59.999999999
 ```
+
+# More sample codes
+
+Chaining method calls
+
+```rust
+// now assume that it is 2015-01-15 01:30:30.500000000
+
+DateTime::now().start_of().day().end_of().hour();
+// => return carbon::DateTime for 2015-01-15 00:59:59.999999999
+```
+
+Directly specify time and set `now` the time. It is useful for testing.
+
+```rust
+// carbon::DateTime for 2015-01-01 00:00:00
+let tm = time::Tm {
+  tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 1, tm_mon: 0, tm_year: 115, tm_wday: 4, tm_yday: 0, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0 };
+}
+
+let test_now = DateTime::create_from_tm(tm);
+DateTime::set_test_now(test_now);
+DateTime::now();
+// => return carbon::DateTime for 2015-01-01 00:00:00
+```
+
+rust-carbon is thin wrapper of [rust-time](https://github.com/rust-lang/time). You can access `time::Tm` easily.
+
+```rust
+// now assume that it is 2015-01-15 01:30:30.500000000
+
+DateTime::now().tm.strftime("%Y-%m-%d %H:%M:%S").ok().unwrap().to_string();
+// => return string "2015-01-15 01:30:30"
+
+use std::ops::{Add, Sub};
+
+let hour = time::Duration::hours(1);
+DateTime::now().tm.add(hour)
+// return time::Tm for 2015-01-15 02:30:30.500000000
+```
+
+# Known Issue
+
+- rust-carbon can only deal UTC.
+- enable to modify `start_of().year()`
