@@ -1,0 +1,1 @@
+initSidebarItems({"trait":[["CarbonDuration",""]],"struct":[["DateTime",""],["End",""],["Start",""],["Tm","Holds a calendar date and time broken down into its components (year, month, day, and so on), also called a broken-down time value."]]});
