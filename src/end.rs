@@ -27,7 +27,7 @@ impl<'a> CarbonDuration for End<'a> {
             0 => copied_tm.tm_yday = self.date_time.days_in_month(0) - 1,
             _ => {
                 let mut yday = 0;
-                for month in (0..self.date_time.tm.tm_mon + 1) {
+                for month in 0..self.date_time.tm.tm_mon + 1 {
                     yday += self.date_time.days_in_month(month);
                 }
                 copied_tm.tm_yday = yday - 1;
