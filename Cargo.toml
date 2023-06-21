@@ -9,4 +9,5 @@ homepage="https://github.com/gong023/rust-carbon"
 documentation = "http://gong023.github.io/rust-carbon/carbon/index.html"
 
 [dependencies]
-time = "0.1"
+time = "0.3.22"
+time-macros = "*"
