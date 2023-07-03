@@ -13,7 +13,7 @@ type Tm = time::OffsetDateTime;
 
 static mut TEST_NOW: Option<DateTime> = None;
 
-#[derive(PartialEq, Eq, Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone, Copy)]
 pub struct DateTime {
     tm: Tm,
 }
