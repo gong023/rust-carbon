@@ -19,6 +19,8 @@ pub struct DateTime {
 }
 
 pub trait CarbonDuration {
+    fn year(&self) -> DateTime;
+
     fn month(&self) -> DateTime;
 
     fn day(&self) -> DateTime;
@@ -180,6 +182,7 @@ mod tests {
 
     #[test]
     fn test_start_of_month() {
+        assert_eq!(DateTime::create_from_tm(start_tms().january), DateTime::create_from_tm(end_tms().january).start_of().year());
         assert_eq!(DateTime::create_from_tm(start_tms().january), DateTime::create_from_tm(end_tms().january).start_of().month());
         assert_eq!(DateTime::create_from_tm(start_tms().february), DateTime::create_from_tm(end_tms().february).start_of().month());
         assert_eq!(DateTime::create_from_tm(start_tms().march), DateTime::create_from_tm(end_tms().march).start_of().month());
@@ -267,6 +270,7 @@ mod tests {
         assert_eq!(DateTime::create_from_tm(end_tms().october), DateTime::create_from_tm(end_tms().october).end_of().month());
         assert_eq!(DateTime::create_from_tm(end_tms().november), DateTime::create_from_tm(end_tms().november).end_of().month());
         assert_eq!(DateTime::create_from_tm(end_tms().december), DateTime::create_from_tm(end_tms().december).end_of().month());
+        assert_eq!(DateTime::create_from_tm(end_tms().december), DateTime::create_from_tm(end_tms().december).end_of().year());
 
         let january_mid = datetime!(2015-01-15 0:00 +000);
         // let january_mid = Tm { tm_sec: 0, tm_min: 0, tm_hour: 0, tm_mday: 15, tm_mon: 0, tm_year: 115, tm_wday: 4, tm_yday: 14, tm_isdst: 0, tm_utcoff: 0, tm_nsec: 0 };

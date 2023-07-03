@@ -40,6 +40,8 @@ DateTime::now().start_of().day();
 // => return carbon::DateTime for 2015-01-15 00:00:00.000000000
 DateTime::now().start_of().month();
 // => return carbon::DateTime for 2015-01-01 00:00:00.000000000
+DateTime::now().start_of().year();
+// => return carbon::DateTime for 2015-01-15 00:00:00.000000000
 
 DateTime::now().end_of().second();
 // => return carbon::DateTime for 2015-01-15 01:30:30.999999999
@@ -51,6 +53,8 @@ DateTime::now().end_of().day();
 // => return carbon::DateTime for 2015-01-15 23:59:59.999999999
 DateTime::now().end_of().month();
 // => return carbon::DateTime for 2015-01-31 23:59:59.999999999
+DateTime::now().end_of().year();
+// => return carbon::DateTime for 2015-12-31 11:59:59.999999999
 ```
 
 # More sample codes

@@ -17,6 +17,12 @@ impl<'a> End<'a> {
 }
 
 impl<'a> CarbonDuration for End<'a> {
+    fn year(&self) -> DateTime {
+        DateTime::create_from_tm(self.date_time.tm.replace_date(
+            self.date_time.tm.date().replace_month(time::Month::December).expect("Could not replace month")
+        )).end_of().month()
+    }
+
     fn month(&self) -> DateTime {
         let month_number :i32 = match self.date_time.tm.date().month() {
             time::Month::January => 1,
