@@ -18,7 +18,7 @@ pub struct DateTime {
     tm: Tm,
 }
 
-pub trait CarbonDuration {
+pub trait CarbonDuration<'d> {
     fn year(&self) -> DateTime;
 
     fn month(&self) -> DateTime;

@@ -12,7 +12,7 @@ impl<'a> Start<'a> {
     }
 }
 
-impl<'a> CarbonDuration for Start<'a> {
+impl<'a, 'd> CarbonDuration<'d> for Start<'a> {
     fn year(&self) -> DateTime {
         DateTime::create_from_tm(self.date_time.tm.replace_date(
             self.date_time.tm.date().replace_month(time::Month::January).expect("Could not replace month")

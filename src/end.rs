@@ -4,6 +4,7 @@ use super::{DateTime, CarbonDuration};
 
 static NANOSECOND_MAX: u32 = 999999999;
 
+#[derive(Clone, Copy)]
 pub struct End<'a> {
     date_time: &'a DateTime
 }
@@ -16,7 +17,7 @@ impl<'a> End<'a> {
     }
 }
 
-impl<'a> CarbonDuration for End<'a> {
+impl<'a, 'd> CarbonDuration<'d> for End<'a> {
     fn year(&self) -> DateTime {
         DateTime::create_from_tm(self.date_time.tm.replace_date(
             self.date_time.tm.date().replace_month(time::Month::December).expect("Could not replace month")
