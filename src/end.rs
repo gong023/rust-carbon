@@ -1,5 +1,10 @@
-use super::{DateTime, CarbonDuration, zeller_congurence};
+use std::convert::TryInto;
 
+use super::{DateTime, CarbonDuration};
+
+static NANOSECOND_MAX: u32 = 999999999;
+
+#[derive(Clone, Copy)]
 pub struct End<'a> {
     date_time: &'a DateTime
 }
@@ -12,52 +17,55 @@ impl<'a> End<'a> {
     }
 }
 
-impl<'a> CarbonDuration for End<'a> {
+impl<'a, 'd> CarbonDuration<'d> for End<'a> {
+    fn year(&self) -> DateTime {
+        DateTime::create_from_tm(self.date_time.tm.replace_date(
+            self.date_time.tm.date().replace_month(time::Month::December).expect("Could not replace month")
+        )).end_of().month()
+    }
+
     fn month(&self) -> DateTime {
-        let mut copied_tm = self.date_time.tm;
-        copied_tm.tm_mday = self.date_time.days_in_month(self.date_time.tm.tm_mon);
+        let month_number :i32 = match self.date_time.tm.date().month() {
+            time::Month::January => 1,
+            time::Month::February => 2,
+            time::Month::March => 3,
+            time::Month::April => 4,
+            time::Month::May => 5,
+            time::Month::June => 6,
+            time::Month::July => 7,
+            time::Month::August => 8,
+            time::Month::September => 9,
+            time::Month::October => 10,
+            time::Month::November => 11,
+            time::Month::December => 12,
+        };
+        DateTime::create_from_tm(self.date_time.tm.replace_day(
+            self.date_time.days_in_month(month_number).try_into().unwrap()
+        ).expect("Cannot replace day")).end_of().day()
 
-        copied_tm.tm_wday = zeller_congurence(
-            self.date_time.tm.tm_year as f32,
-            self.date_time.tm.tm_mon as f32,
-            copied_tm.tm_mday as f32
-        );
-
-        match self.date_time.tm.tm_mon {
-            0 => copied_tm.tm_yday = self.date_time.days_in_month(0) - 1,
-            _ => {
-                let mut yday = 0;
-                for month in 0..self.date_time.tm.tm_mon + 1 {
-                    yday += self.date_time.days_in_month(month);
-                }
-                copied_tm.tm_yday = yday - 1;
-            }
-        }
-
-        DateTime::create_from_tm(copied_tm).end_of().day()
     }
 
     fn day(&self) -> DateTime {
-        let mut copied_tm = self.date_time.tm;
-        copied_tm.tm_hour = 23;
-        DateTime::create_from_tm(copied_tm).end_of().hour()
+        DateTime::create_from_tm(self.date_time.tm.replace_time(
+            self.date_time.tm.time().replace_hour(23).unwrap())
+        ).end_of().hour()
     }
 
     fn hour(&self) -> DateTime {
-        let mut copied_tm = self.date_time.tm;
-        copied_tm.tm_min = 59;
-        DateTime::create_from_tm(copied_tm).end_of().minute()
+        DateTime::create_from_tm(self.date_time.tm.replace_time(
+            self.date_time.tm.time().replace_minute(59).unwrap())
+        ).end_of().minute()
     }
 
     fn minute(&self) -> DateTime {
-        let mut copied_tm = self.date_time.tm;
-        copied_tm.tm_sec = 59;
-        DateTime::create_from_tm(copied_tm).end_of().second()
+        DateTime::create_from_tm(self.date_time.tm.replace_time(
+            self.date_time.tm.time().replace_second(59).unwrap())
+        ).end_of().second()
     }
 
     fn second(&self) -> DateTime {
-        let mut copied_tm = self.date_time.tm;
-        copied_tm.tm_nsec = 999999999;
-        DateTime::create_from_tm(copied_tm)
+        DateTime::create_from_tm(self.date_time.tm.replace_time(
+            self.date_time.tm.time().replace_nanosecond(NANOSECOND_MAX).expect("Unable to replace nanosecond")
+        ))
     }
 }

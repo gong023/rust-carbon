@@ -1,4 +1,4 @@
-use super::{DateTime, CarbonDuration, zeller_congurence};
+use super::{DateTime, CarbonDuration};
 
 pub struct Start<'a> {
     date_time: &'a DateTime
@@ -12,52 +12,40 @@ impl<'a> Start<'a> {
     }
 }
 
-impl<'a> CarbonDuration for Start<'a> {
+impl<'a, 'd> CarbonDuration<'d> for Start<'a> {
+    fn year(&self) -> DateTime {
+        DateTime::create_from_tm(self.date_time.tm.replace_date(
+            self.date_time.tm.date().replace_month(time::Month::January).expect("Could not replace month")
+        )).start_of().month()
+    }
+
     fn month(&self) -> DateTime {
-        let mut copied_tm = self.date_time.tm;
-        copied_tm.tm_mday = 1;
-
-        copied_tm.tm_wday = zeller_congurence(
-            self.date_time.tm.tm_year as f32,
-            self.date_time.tm.tm_mon as f32,
-            1.0
-        );
-
-        match self.date_time.tm.tm_mon {
-            0 => copied_tm.tm_yday = 0,
-            _ => {
-                let mut yday = 0;
-                for m in 0..self.date_time.tm.tm_mon {
-                    yday += self.date_time.days_in_month(m);
-                }
-                copied_tm.tm_yday = yday;
-            }
-        }
-
-        DateTime::create_from_tm(copied_tm).start_of().day()
+        DateTime::create_from_tm(self.date_time.tm.replace_date(
+            self.date_time.tm.date().replace_day(1).expect("Could not replace day")
+        )).start_of().day()
     }
 
     fn day(&self) -> DateTime {
-        let mut copied_tm = self.date_time.tm;
-        copied_tm.tm_hour = 0;
-        DateTime::create_from_tm(copied_tm).start_of().hour()
+        DateTime::create_from_tm(self.date_time.tm.replace_time(
+            self.date_time.tm.time().replace_hour(0).expect("Could not replace minute")
+        )).start_of().hour()
     }
 
     fn hour(&self) -> DateTime {
-        let mut copied_tm = self.date_time.tm;
-        copied_tm.tm_min = 0;
-        DateTime::create_from_tm(copied_tm).start_of().minute()
+        DateTime::create_from_tm(self.date_time.tm.replace_time(
+            self.date_time.tm.time().replace_minute(0).expect("Could not replace minute")
+        )).start_of().minute()
     }
 
     fn minute(&self) -> DateTime {
-        let mut copied_tm = self.date_time.tm;
-        copied_tm.tm_sec = 0;
-        DateTime::create_from_tm(copied_tm).start_of().second()
+        DateTime::create_from_tm(self.date_time.tm.replace_time(
+            self.date_time.tm.time().replace_second(0).expect("Could not replace second")
+        )).start_of().second()
     }
 
     fn second(&self) -> DateTime {
-        let mut copied_tm = self.date_time.tm;
-        copied_tm.tm_nsec = 0;
-        DateTime::create_from_tm(copied_tm)
+        DateTime::create_from_tm(self.date_time.tm.replace_time(
+            self.date_time.tm.time().replace_nanosecond(0).expect("Could not replace second")
+        ))
     }
 }
